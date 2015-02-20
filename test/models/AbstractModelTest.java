@@ -13,7 +13,7 @@ import play.test.WithApplication;
  * @author albertoalmagro
  *
  */
-public abstract class ModelsTest extends WithApplication {
+public abstract class AbstractModelTest extends WithApplication {
 
 	@Before
 	public void setUp() {

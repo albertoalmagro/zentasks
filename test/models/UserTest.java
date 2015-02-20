@@ -2,6 +2,7 @@ package models;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ import org.junit.Test;
  * @author albertoalmagro
  *
  */
-public class UserTest extends ModelsTest {
+public class UserTest extends AbstractModelTest {
 
 	/**
 	 * Tests create and retrieve a user.
@@ -22,6 +23,14 @@ public class UserTest extends ModelsTest {
 		User bob = User.find.where().eq("email", "bob@gmail.com").findUnique();
 		assertNotNull(bob);
 		assertEquals("Bob", bob.name);
+	}
+	
+	@Test
+	public void tryAuthenticateUser() {
+		new User("bob@gmail.com", "Bob", "secret").save();
+		assertNotNull(User.authenticate("bob@gmail.com", "secret"));
+		assertNull(User.authenticate("bob@gmail.com", "badpassword"));
+		assertNull(User.authenticate("tom@gmail.com", "secret"));
 	}
 
 }
