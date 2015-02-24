@@ -32,5 +32,18 @@ public class UserTest extends AbstractModelTest {
 		assertNull(User.authenticate("bob@gmail.com", "badpassword"));
 		assertNull(User.authenticate("tom@gmail.com", "secret"));
 	}
+	
+	@Test
+	public void testAuthenticateUserFromLoadedContent() {
+		assertNotNull(User.authenticate("bob@example.com", "secret"));
+        assertNotNull(User.authenticate("jane@example.com", "secret"));
+        assertNull(User.authenticate("jeff@example.com", "badpassword"));
+        assertNull(User.authenticate("tom@example.com", "secret"));
+	}
+	
+	@Test
+	public void testTotalUsers() {
+		assertEquals(3, User.find.findRowCount());
+	}
 
 }

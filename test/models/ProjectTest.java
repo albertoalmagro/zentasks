@@ -26,5 +26,16 @@ public class ProjectTest extends AbstractModelTest {
 		assertEquals(1, results.size());
 		assertEquals("Play 2", results.get(0).name);
 	}
+	
+	@Test
+	public void testTotalProjects() {
+		assertEquals(7, Project.find.findRowCount());
+	}
+	
+	@Test
+	public void testAllProjectsFromAnUser() {
+		List<Project> bobsProjects = Project.findInvolving("bob@example.com");
+        assertEquals(5, bobsProjects.size());
+	}
 
 }

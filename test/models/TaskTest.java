@@ -35,5 +35,16 @@ public class TaskTest extends AbstractModelTest {
 		assertEquals(1, results.size());
 		assertEquals("Release next version", results.get(0).title);
 	}
+	
+	@Test
+	public void testTotalTasks() {
+		assertEquals(5, Task.find.findRowCount());
+	}
+	
+	@Test
+	public void testAllTasksFromAnUser() {
+		List<Task> bobsTasks = Task.findTodoInvolving("bob@example.com");
+        assertEquals(4, bobsTasks.size());
+	}
 
 }
