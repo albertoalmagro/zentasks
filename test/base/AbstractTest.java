@@ -1,4 +1,4 @@
-package models;
+package base;
 
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.fakeGlobal;
@@ -20,8 +20,9 @@ import play.test.WithApplication;
  * @author albertoalmagro
  *
  */
-public abstract class AbstractModelTest extends WithApplication {
+public abstract class AbstractTest extends WithApplication {
 	
+	@SuppressWarnings("rawtypes")
 	@Before
     public void setUp() {
         Helpers.start(fakeApplication(inMemoryDatabase(), fakeGlobal()));

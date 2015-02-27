@@ -6,13 +6,15 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import base.AbstractTest;
+
 /**
  * Unit tests for User Entity.
  * 
  * @author albertoalmagro
  *
  */
-public class UserTest extends AbstractModelTest {
+public class UserTest extends AbstractTest {
 
 	/**
 	 * Tests create and retrieve a user.

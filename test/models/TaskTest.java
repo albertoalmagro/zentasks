@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import base.AbstractTest;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,7 +13,7 @@ import static org.junit.Assert.assertEquals;
  * @author albertoalmagro
  *
  */
-public class TaskTest extends AbstractModelTest {
+public class TaskTest extends AbstractTest {
 	
 	@Test
 	public void findTodoTasksInvolving() {

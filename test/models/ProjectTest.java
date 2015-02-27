@@ -6,13 +6,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import base.AbstractTest;
+
 /**
  * Unit tests for Project Entity.
  * 
  * @author albertoalmagro
  *
  */
-public class ProjectTest extends AbstractModelTest {
+public class ProjectTest extends AbstractTest {
 	
 	@Test
 	public void findProjectsInvolving() {
