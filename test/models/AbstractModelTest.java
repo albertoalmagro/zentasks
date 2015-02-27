@@ -4,8 +4,14 @@ import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.fakeGlobal;
 import static play.test.Helpers.inMemoryDatabase;
 
+import java.util.List;
+
 import org.junit.Before;
 
+import com.avaje.ebean.Ebean;
+
+import play.libs.Yaml;
+import play.test.Helpers;
 import play.test.WithApplication;
 
 /**
@@ -15,14 +21,11 @@ import play.test.WithApplication;
  *
  */
 public abstract class AbstractModelTest extends WithApplication {
-
+	
 	@Before
-	public void setUp() {
-		startFakeApplicationWithInMemoryDatabase();
-	}
-
-	private void startFakeApplicationWithInMemoryDatabase() {
-		fakeApplication(inMemoryDatabase(), fakeGlobal());
-	}
+    public void setUp() {
+        Helpers.start(fakeApplication(inMemoryDatabase(), fakeGlobal()));
+        Ebean.save((List) Yaml.load("test-data.yml"));
+    }
 	
 }
