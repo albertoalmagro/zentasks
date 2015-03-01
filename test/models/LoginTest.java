@@ -32,5 +32,20 @@ public class LoginTest extends AbstractTest {
 		assertEquals(400, Helpers.status(result));
 		assertNull(Helpers.session(result).get("email"));
 	}
+	
+	@Test
+	public void authenticated() {
+		Result result = Helpers.callAction(controllers.routes.ref.Application.index(),
+				Helpers.fakeRequest().withSession("email", "bob@example.com"));
+		assertEquals(200, Helpers.status(result));
+	}
+	
+	@Test
+	public void notAuthenticated() {
+		Result result = Helpers.callAction(controllers.routes.ref.Application.index(),
+				Helpers.fakeRequest());
+		assertEquals(303, Helpers.status(result));
+		assertEquals("/login", Helpers.header("Location", result));
+	}
 
 }

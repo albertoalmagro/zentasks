@@ -1,18 +1,27 @@
 package controllers;
 
+import static play.data.Form.form;
 import models.Project;
 import models.Task;
 import models.User;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.*;
-import play.data.*;
-import static play.data.Form.*;
+import play.mvc.Security;
+import views.html.index;
+import views.html.login;
 
 public class Application extends Controller {
 
+	@Security.Authenticated(Secured.class)
     public static Result index() {
-        return ok(index.render(Project.find.all(), Task.find.all()));
+        String username = request().username();
+        
+		return ok(index.render(
+        		Project.findInvolving(username),
+        		Task.findTodoInvolving(username),
+        		User.find.byId(username)
+		));
     }
     
     public static Result login() {
@@ -30,6 +39,14 @@ public class Application extends Controller {
     			routes.Application.index()
     		);
     	}
+    }
+    
+    public static Result logout() {
+    	session().clear();
+    	flash("success", "You've been logged out");
+    	return redirect(
+			routes.Application.login()
+    	);
     }
     
     public static class Login {
