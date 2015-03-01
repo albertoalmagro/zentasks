@@ -4,6 +4,7 @@ import static play.data.Form.form;
 import models.Project;
 import models.Task;
 import models.User;
+import play.Routes;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -23,6 +24,18 @@ public class Application extends Controller {
         		User.find.byId(username)
 		));
     }
+	
+	public static Result javascriptRoutes() {
+		response().setContentType("text/javascript");
+		return ok(
+			Routes.javascriptRouter("jsRoutes",
+					controllers.routes.javascript.Projects.add(),
+					controllers.routes.javascript.Projects.delete(),
+					controllers.routes.javascript.Projects.rename(),
+					controllers.routes.javascript.Projects.addGroup()
+			)
+		);
+	}
     
     public static Result login() {
         return ok(login.render(form(Login.class)));
