@@ -56,10 +56,87 @@ class Drawer extends Backbone.View
             $("li",group).each (i,project) ->
                 new Project
                     el: $(project)
+        $("#newGroup").click @addGroup
+    addGroup: ->
+        r = jsRoutes.controllers.Projects.addGroup()
+        $.ajax
+            url: r.url
+            type: r.type
+            success: (data) ->
+                _view = new Group
+                    el: $(data).appendTo("#projects")
+                _view.el.find(".groupName").editInPlace("edit")
 
 class Group extends Backbone.View
+    events:
+        "click    .toggle"          : "toggle"
+        "click    .newProject"      : "newProject"
+    toggle: (e) ->
+        e.preventDefault()
+        @el.toggleClass("closed")
+        false
+    newProject: (e) ->
+        @el.removeClass("closed")
+        r = jsRoutes.controllers.Projects.add()
+        $.ajax
+            url: r.url
+            type: r.type
+            context: this
+            data:
+                group: @el.attr("data-group")
+            success: (tpl) ->
+                _list = $("ul",@el)
+                _view = new Project
+                    el: $(tpl).appendTo(_list)
+                _view.el.find(".name").editInPlace("edit")
+            error: (err) ->
+                $.error("Error: " + err)
 
 class Project extends Backbone.View
+    initialize: ->
+        @id = @el.attr("data-project")
+        @name = $(".name", @el).editInPlace
+            context: this
+            onChange: @renameProject
+    renameProject: (name) ->
+        @loading(true)
+        r = jsRoutes.controllers.Projects.rename(@id)
+        $.ajax
+            url: r.url
+            type: r.type
+            context: this
+            data:
+                name: name
+            success: (data) ->
+                @loading(false)
+                @name.editInPlace("close", data)
+            error: (err) ->
+                @loading(false)
+                $.error("Error: " + err)
+    loading: (display) ->
+        if (display)
+            @el.children(".delete").hide()
+            @el.children(".loader").show()
+        else
+            @el.children(".delete").show()
+            @el.children(".loader").hide()
+    events:
+        "click      .delete"        : "deleteProject"
+    deleteProject: (e) ->
+        e.preventDefault()
+        @loading(true)
+        r = jsRoutes.controllers.Projects.delete(@id)
+        $.ajax
+            url: r.url
+            type: r.type
+            context: this
+            success: ->
+                @el.remove()
+                @loading(false)
+            error: (err) ->
+                @loading(false)
+                $.error("Error: " + err)
+        false
 
 $ -> 
     drawer = new Drawer el: $("#projects")
